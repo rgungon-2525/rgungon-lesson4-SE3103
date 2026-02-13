@@ -16,7 +16,8 @@ import controller.ButtonListener;
 import controller.NewGameButtonListener;
 import controller.StrategyButtonListener;
 import model.TicTacToeGame;
-import model.Marking;;
+import model.Marking;
+import model.PlayStrategy;;
 
 public class AppWindow extends JFrame {
 
@@ -26,8 +27,8 @@ public class AppWindow extends JFrame {
     private AppCanvas canvas = new AppCanvas();
     private BoardButton[] markingButtons = new BoardButton[9];
     private JButton newGameButton = new JButton("New Game");
-    private JRadioButton vsHumanButton = new JRadioButton(vsHumanAction);
-    private JRadioButton vsComputerButton = new JRadioButton(vsComputerAction);
+    private JRadioButton vsHumanButton;
+    private JRadioButton vsComputerButton;
 
     public void init() {
         var cp = getContentPane();
@@ -53,6 +54,8 @@ public class AppWindow extends JFrame {
 
         JPanel radioPanel = new JPanel();
         radioPanel.setBorder(new TitledBorder("Play strategy"));
+        vsHumanButton = new JRadioButton(vsHumanAction, App.game.getStrategy() == PlayStrategy.VsHuman);
+        vsComputerButton = new JRadioButton(vsComputerAction, App.game.getStrategy() == PlayStrategy.VsComputer);
         radioPanel.add(vsHumanButton);
         radioPanel.add(vsComputerButton);
         StrategyButtonListener strategyListener = new StrategyButtonListener();
@@ -84,10 +87,13 @@ public class AppWindow extends JFrame {
 
         switch(game.getState()) {
             case INIT:
+            case OVER:
                 for (var b: markingButtons) {
                     b.setEnabled(false);
                 }
                 newGameButton.setEnabled(true);
+                vsHumanButton.setEnabled(true);
+                vsComputerButton.setEnabled(true);
                 break;
             case PLAYING:
                 newGameButton.setEnabled(false);

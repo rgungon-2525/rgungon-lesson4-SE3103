@@ -26,6 +26,12 @@ public class TicTacToeGame {
         turn = (turn == Marking.X) ? Marking.O : Marking.X;
     }
 
+    public Marking getTurn() {
+        return turn;
+    }
+
+    
+
     public void play (int position) {
         if(strategy == PlayStrategy.VsHuman) {
             humanPlayer(position);
