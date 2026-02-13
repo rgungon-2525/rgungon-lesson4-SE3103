@@ -12,6 +12,8 @@ import javax.swing.border.TitledBorder;
 import javax.swing.plaf.basic.BasicButtonListener;
 
 import controller.ButtonListener;
+import controller.NewGameButtonListener;
+import controller.StrategyButtonListener;
 
 public class AppWindow extends JFrame {
 
@@ -50,6 +52,9 @@ public class AppWindow extends JFrame {
         radioPanel.setBorder(new TitledBorder("Play strategy"));
         radioPanel.add(vsHumanButton);
         radioPanel.add(vsComputerButton);
+        StrategyButtonListener strategyListener = new StrategyButtonListener();
+        vsHumanButton.addActionListener(strategyListener);
+        vsComputerButton.addActionListener(strategyListener);
         ButtonGroup strategyGroup = new ButtonGroup();
         strategyGroup.add(vsHumanButton);
         strategyGroup.add(vsComputerButton);
@@ -58,10 +63,16 @@ public class AppWindow extends JFrame {
         JPanel actionPanel = new JPanel();
         actionPanel.setBorder(new TitledBorder("Action"));
         actionPanel.add(newGameButton);
+        newGameButton.addActionListener(new NewGameButtonListener());
         JButton exitButton = new JButton("Exit");
         exitButton.addActionListener(e -> System.exit(0));
         actionPanel.add(exitButton);
         southPanel.add(actionPanel);
+    }
+
+    public void updateWindow() {
+
+        canvas.repaint();
     }
 
 }
