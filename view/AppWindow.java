@@ -11,9 +11,12 @@ import javax.swing.JRadioButton;
 import javax.swing.border.TitledBorder;
 import javax.swing.plaf.basic.BasicButtonListener;
 
+import controller.App;
 import controller.ButtonListener;
 import controller.NewGameButtonListener;
 import controller.StrategyButtonListener;
+import model.TicTacToeGame;
+import model.Marking;;
 
 public class AppWindow extends JFrame {
 
@@ -68,10 +71,34 @@ public class AppWindow extends JFrame {
         exitButton.addActionListener(e -> System.exit(0));
         actionPanel.add(exitButton);
         southPanel.add(actionPanel);
+
+        updateWindow();
     }
 
     public void updateWindow() {
+        TicTacToeGame game = App.game;
+        Marking[] board = game.getBoard();
+        for (int i=0; i < board.length; i++) {
+            markingButtons[i].setMark(board[i]);
+        }
 
+        switch(game.getState()) {
+            case INIT:
+                for (var b: markingButtons) {
+                    b.setEnabled(false);
+                }
+                newGameButton.setEnabled(true);
+                break;
+            case PLAYING:
+                newGameButton.setEnabled(false);
+                vsHumanButton.setEnabled(false);
+                vsComputerButton.setEnabled(false);
+                for (int i = 0; i < board.length; i++) {
+                    markingButtons[i].setEnabled(board[i] == Marking.U);
+                }
+                break;
+        }
+        
         canvas.repaint();
     }
 

@@ -35,6 +35,12 @@ public class TicTacToeGame {
         }
     }
 
+    public Marking getWinner() {
+        return winner;
+    }
+
+
+
     private void humanPlayer(int pos) {
         board[pos] = turn;
         ++moves;
@@ -118,6 +124,14 @@ public class TicTacToeGame {
 
     public void setStrategy(PlayStrategy strategy) {
         this.strategy = strategy;
+    }
+
+    public Marking[] getBoard() {
+        return board;
+    }
+
+    public void setBoard(Marking[] board) {
+        this.board = board;
     }
 
     @Override
