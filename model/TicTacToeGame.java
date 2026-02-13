@@ -1,5 +1,9 @@
 package model;
 
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Random;
+
 public class TicTacToeGame {
     
     private Marking[] board = new Marking[9];
@@ -30,14 +34,17 @@ public class TicTacToeGame {
         return turn;
     }
 
-    
-
     public void play (int position) {
         if(strategy == PlayStrategy.VsHuman) {
             humanPlayer(position);
             setWinner();
         } else if (strategy == PlayStrategy.VsComputer) {
-            //computer player
+            humanPlayer(position);
+            setWinner();
+            if (getWinner() != null) return;
+            changeTurns();
+            computerPlayer();
+            setWinner();
         }
     }
 
@@ -45,7 +52,40 @@ public class TicTacToeGame {
         return winner;
     }
 
+    private void computerPlayer() {
+        int pos = computerPick();
+        board[pos] = turn;
+        ++moves;
+    }
 
+    private int computerPick () {
+    //     int pos = -1;
+    //     for (int i = 0; i < board.length; i++) {
+    //         if (board[i] == Marking.U) {
+    //             pos = i;
+    //             break;
+    //         }
+    //     }
+    //     assert pos >= 0 : "Invalid position from computerPick()";
+    //     return pos;
+
+        List<Integer> availableSpots = new ArrayList<>();
+
+        //Scan all empty spots
+        for (int i = 0; i < board.length; i++) {
+            if (board[i] == Marking.U) {
+                availableSpots.add(i);
+            }
+        }
+
+        assert !availableSpots.isEmpty() : "No moves left in computerPick()";
+    
+        // Pick random spot for unpredictability
+        Random random = new Random();
+        int randomIndex = random.nextInt(availableSpots.size());
+
+        return availableSpots.get(randomIndex);
+    }
 
     private void humanPlayer(int pos) {
         board[pos] = turn;
